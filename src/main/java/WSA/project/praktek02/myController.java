@@ -10,6 +10,7 @@ import java.util.Date;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,30 +24,21 @@ import org.springframework.web.multipart.MultipartFile;
 @Controller
 public class myController {
     @RequestMapping("/home")
-    @ResponseBody
-    public String getData (@RequestParam("nama") String nama,
-            @RequestParam("tanggal")
-            @DateTimeFormat(pattern="yyyy-MM-dd")Date date,
-            @RequestParam("image") MultipartFile image)throws IOException {
-        
-        SimpleDateFormat newTanggal = new SimpleDateFormat("EE-dd-MMMM-yyyy");
-        String blob = Base64.encodeBase64String(image.getBytes());
-        String tanggalKu = newTanggal.format(date) ;
-        nama = textProcess(nama);
-        return nama + "<br>"+ "<br>" + "<img src='data:image/*;base64,"+blob+"'/>"+ tanggalKu ;
-    }
-
-    private String textProcess(String nama) {
-        String result = " ";
-        if (nama.equals("Soekarno")){
-            result = nama + " Romusha";
-        }else if(nama.equals(" Soeharto")){
-            result = nama + " Laksanaken";
-        }else if(nama.equals("Megawati")){
-            result = nama + " Hooh Tenan";
-        }else{
-            result = nama + " YOo Ndak Tau";
-        }
-        return result;
+    public String getInput(
+            @RequestParam(value = "nama") String var_nama,
+            @RequestParam(value = "nim") String var_nim,
+            @RequestParam(value = "tanggal") String var_tanggal,
+            @RequestParam(value = "prodi") String var_prodi,
+            @RequestParam(value = "image") MultipartFile var_image,Model ktm
+        )throws IOException{
+        byte[] img = var_image.getBytes();
+        String base64Image = Base64.encodeBase64String(img);
+        String imglink = "data:image/*;base64,".concat(base64Image);
+        ktm.addAttribute("send_nama", var_nama);
+        ktm.addAttribute("send_nim", var_nim);
+        ktm.addAttribute("send_tanggal", var_tanggal);
+        ktm.addAttribute("send_prodi", var_prodi);
+        ktm.addAttribute("send_image", imglink);
+        return "viewktm";   
     }
 }
