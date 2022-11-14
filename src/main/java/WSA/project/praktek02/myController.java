@@ -27,6 +27,7 @@ public class myController {
     public String getInput(
             @RequestParam(value = "nama") String var_nama,
             @RequestParam(value = "nim") String var_nim,
+            @RequestParam(value = "email") String var_email,
             @RequestParam(value = "tanggal") String var_tanggal,
             @RequestParam(value = "prodi") String var_prodi,
             @RequestParam(value = "image") MultipartFile var_image,Model ktm
@@ -36,6 +37,7 @@ public class myController {
         String imglink = "data:image/*;base64,".concat(base64Image);
         ktm.addAttribute("send_nama", var_nama);
         ktm.addAttribute("send_nim", var_nim);
+        ktm.addAttribute("send_email", var_email);
         ktm.addAttribute("send_tanggal", var_tanggal);
         ktm.addAttribute("send_prodi", var_prodi);
         ktm.addAttribute("send_image", imglink);
